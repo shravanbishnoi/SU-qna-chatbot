@@ -20,12 +20,12 @@ const Chatbot = () => {
         } catch (error) {
             setMessages([...messages, { sender: 'user', text: userInput }, { sender: 'bot', text: "Error connecting to the chatbot." }]);
         }
-        
         setUserInput('');
     };
 
     const handleKeyDown = (e) => {
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault(); // Prevents creating a new line on Enter without Shift key
             handleSubmit();
         }
     };
@@ -50,13 +50,14 @@ const Chatbot = () => {
             </div>
             
             <div className="input-container">
-                <input
-                    type="text"
+                <textarea
                     className="input-field"
                     value={userInput}
                     onChange={(e) => setUserInput(e.target.value)}
                     onKeyDown={handleKeyDown}  // Listening for Enter key
                     placeholder="Ask me about Sitare university"
+                    rows={1}  // Initial row size
+                    style={{ overflow: 'hidden' }} // Prevents scrollbars from appearing
                 />
                 <button className="send-button" onClick={handleSubmit}>
                     <i className="fas fa-paper-plane" aria-hidden="true"></i>
